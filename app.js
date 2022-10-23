@@ -135,7 +135,31 @@ const addEmployee = () => {
 }
 
 const addDepartment = () => {
-
+    prompt([
+        {
+            type: 'input',
+            message: 'What department do you want to add?',
+            name: "newDepartment",
+            validate: newDepartment => {
+                if(newDepartment) {
+                    return true;
+                }
+                else {
+                    console.log("Please enter a new department.");
+                }
+            }
+        }
+    ]).then(({newDepartment}) => {
+        db.query(`INSERT INTO department (name)
+        VALUES (?)`, newDepartment, (err, res) => {
+            if(err) {
+                console.log(err);
+            }
+            console.log();
+            console.log(`Added ${newDepartment} to departments.`);
+            init();
+        })
+    });
 }
 
 const addRole = () => {
@@ -143,7 +167,7 @@ const addRole = () => {
 }
 
 const updateEmployeeRole = () => {
-    
+
 }
 
 // init();
