@@ -12,3 +12,13 @@ const db = mysql.createConnection(
         database: process.env.DB_NAME
     }
 );
+
+figlet("Employee Manager", (err, data) => {
+    if(err) {
+        console.log("Something went wrong.");
+        console.log(err);
+        return;
+    }
+
+    console.log(data);
+});
