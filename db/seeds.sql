@@ -15,7 +15,7 @@ VALUES ("Help Desk", 50000, 2),
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Claudio", "Pagan", 2, 1),
-       ("Emily", "Blaze", 4, 1);
+       ("Emily", "Blaze", 4, 1),
        ("Bruce", "Wayne", 1, 1),
        ("Luke", "SkyWalker", 3, 1),
        ("Ken", "Clark", 4, 2);
