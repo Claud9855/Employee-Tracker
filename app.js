@@ -1,7 +1,7 @@
 const mysql = require("mysql2");
 const {prompt} = require("inquirer");
 const cTable = require("console.table");
-
+const figlet = require("figlet");
 require("dotenv").config();
 
 const db = mysql.createConnection(
