@@ -130,4 +130,20 @@ const viewAllRoles = () => {
     });
 }
 
+const addEmployee = () => {
+
+}
+
+const addDepartment = () => {
+
+}
+
+const addRole = () => {
+
+}
+
+const updateEmployeeRole = () => {
+    
+}
+
 // init();
