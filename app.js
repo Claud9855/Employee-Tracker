@@ -17,7 +17,7 @@ db.connect((err) => {
     if(err) {
         console.log(err);
     }
-    console.log(`Connection id: ${db.threadId}` );
+    header();
     init();
 });
 
@@ -35,7 +35,6 @@ const header = () => {
 const commands = ["View All Employees", "Add Employee", "Update Employee Role", "View All Roles", "Add Roles", "View All Departments", "Add Department", "Quit"];
 
 const init = () => {
-    //header();
     prompt([
         {
             type: "list",
@@ -43,7 +42,8 @@ const init = () => {
             name: "command",
             choices: commands
         }
-    ]).then(({command}) => {
+    ])
+    .then(({command}) => {
         if(command === commands[0]){
             viewAllEmployees();
         }
@@ -91,7 +91,6 @@ const viewAllDepartments = () => {
         if(err) {
             console.log(err);
         }
-        console.log();
         console.table(res);
         init();
     });
@@ -112,7 +111,6 @@ FROM employee
         if(err) {
             console.log(err);
         }
-        console.log();
         console.table(res);
         init();
     });
@@ -124,7 +122,6 @@ const viewAllRoles = () => {
         if(err) {
             console.log(err);
         }
-        console.log();
         console.table(res);
         init();
     });
@@ -206,7 +203,6 @@ const addDepartment = () => {
             if(err) {
                 console.log(err);
             }
-            console.log();
             console.log(`Added ${newDepartment} to departments.`);
             init();
         })
@@ -255,7 +251,40 @@ const addRole = () => {
 }
 
 const updateEmployeeRole = () => {
-
+    db.query('SELECT * FROM employee', (err, res) => {
+        if(err) {
+            console.log(err);
+        }
+        const employees = res.map(({id, first_name, last_name}) => ({name: first_name + " " + last_name, value: id}));
+        db.query('SELECT role.id, role.title FROM role', (err, res) => {
+            if(err) {
+                console.log(err);
+            }
+            const roles = res.map(({id, title}) => ({name: title, value: id}));
+            prompt([
+                {
+                    type: 'list',
+                    name: 'employee',
+                    message: 'which employee\'s role do you want to update?',
+                    choices: employees
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'which role do you want to assign the selected employee?',
+                    choices: roles  
+                }
+            ])
+            .then(({employee, role}) => {
+                db.query('UPDATE employee SET role_id = ? WHERE id = ?',[role, employee], (err, res) => {
+                    if(err) {
+                        console.log(err);
+                    }
+                    console.log(`updated employee's role`);
+                    init();
+                });
+            });
+        });
+        
+    });
 }
-
-// init();
