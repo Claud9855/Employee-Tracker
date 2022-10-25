@@ -8,7 +8,8 @@
 
 ## Link To Walkthrough Video
 ----------------------------
-
+- Click at the link to watch the walkthrough video
+https://drive.google.com/file/d/16J0WYSFCU5rD2NOdKiHqTHU47Zt3eZW9/view
 
 ## Screenshots
 ---------------
