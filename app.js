@@ -131,7 +131,58 @@ const viewAllRoles = () => {
 }
 
 const addEmployee = () => {
-
+    let roles = [];
+    let managers = [];
+    db.query('SELECT role.id, role.title FROM role', (err, res) => {
+        if(err) {
+            console.log(err);
+        }
+        roles = res.map(({id, title}) => ({name: title, value: id}));
+        db.query('SELECT * FROM employee', (err, res) => {
+            if(err) {
+                console.log(err);
+            }
+            managers = res.map(({id, first_name, last_name}) => ({name: first_name + " " + last_name, value: id}));
+            prompt([
+                {
+                    type: 'input',
+                    message: 'what is the employee\'s first name?',
+                    name: 'firstName'
+                },
+                {
+                    type: 'input',
+                    message: 'what is the employee\'s last name?',
+                    name: 'lastName'
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'what is the employee role?',
+                    choices: roles
+        
+                },
+                {
+                    type: 'list',
+                    name: 'manager',
+                    message: 'who is the emloyee\'s manager?',
+                    choices: managers
+                }
+            ])
+            .then(({firstName, lastName, role, manager}) => {
+                db.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [firstName, lastName, role, manager], (err, res) => {
+                    if(err) {
+                        console.log(err);
+                    }
+                    console.log(`${firstName} ${lastName} was added to database`);
+                    init();
+    
+                });
+                
+            });
+        });
+        
+    });
+    
 }
 
 const addDepartment = () => {
@@ -163,7 +214,44 @@ const addDepartment = () => {
 }
 
 const addRole = () => {
+    let departments = [];
+    db.query('SELECT name, id FROM department', (err, res) => {
+        if(err) {
+            console.log(err);
+        }
+        departments = res.map(({name, id}) => ({name: name, value: id}));
+        prompt([
+            {
+                type: 'input',
+                message: 'what is the title of the new role?',
+                name: 'title'
+            },
+            {
+                type: 'input',
+                message: 'what is the salary of the new role?',
+                name: 'salary'
+            },
+            {
+                type: 'list',
+                name: 'department',
+                message: 'what department does this role belong to?',
+                choices: departments
+    
+            }
+        ])
+        .then(({title, salary, department}) => {
+            db.query('INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)', [title, salary, department], (err, res) => {
+                if(err) {
+                    console.log(err);
+                }
+                console.log(`${title} was added to database`);
+                init();
 
+            });
+            
+        });
+    });
+    
 }
 
 const updateEmployeeRole = () => {
